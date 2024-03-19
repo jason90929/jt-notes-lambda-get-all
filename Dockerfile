@@ -1,7 +1,7 @@
 FROM golang:1.22.1
 
 # Set destination for COPY
-WORKDIR /jason-tseng-login-info-lambda-query
+WORKDIR /jt-notes-lambda-get-all
 
 COPY . .
 

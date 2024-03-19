@@ -1,4 +1,4 @@
 version: '2'
 services:
-  jason-tseng-login-info-lambda-query:
-    image: 306698408315.dkr.ecr.ap-northeast-1.amazonaws.com/login-info-lambda-query:latest
+  jt-notes-lambda-get-all:
+    image: 306698408315.dkr.ecr.ap-northeast-1.amazonaws.com/jt-notes-lambda-get-all:latest
