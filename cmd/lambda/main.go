@@ -1,32 +1,26 @@
 package main
 
 import (
-	"context"
+	"encoding/json"
+	"fmt"
 	"log"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
 func main() {
-	cfg, err := config.LoadDefaultConfig(context.TODO())
-	if err != nil {
-		log.Fatal(err)
-	}
+	lambda.Start(handler)
+}
 
-	// Create an Amazon S3 service client
-	client := s3.NewFromConfig(cfg)
-
-	// Get the first page of results for ListObjectsV2 for a bucket
-	output, err := client.ListObjectsV2(context.TODO(), &s3.ListObjectsV2Input{
-		Bucket: aws.String("r40527-backup"),
-	})
-	if err != nil {
-		log.Fatal(err)
+func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	b, _ := json.Marshal(request)
+	log.Println("raw request", string(b))
+	params := request.QueryStringParameters
+	name := params["name"]
+	response := events.APIGatewayProxyResponse{
+		StatusCode: 200,
+		Body:       fmt.Sprintf("your query parameter name: %v", name),
 	}
-
-	log.Println("first page results:")
-	for _, object := range output.Contents {
-		log.Printf("key=%s size=%d", aws.ToString(object.Key), object.Size)
-	}
+	return response, nil
 }
