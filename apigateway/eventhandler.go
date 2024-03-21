@@ -7,24 +7,17 @@ import (
 	"log/slog"
 
 	"github.com/aws/aws-lambda-go/events"
-	getAll "github.com/jason90929/lambda-ddb-query"
+	getAll "github.com/jason90929/jt-notes-lambda-get-all"
 )
 
 type server struct {
-	c *getAll.Client
+	c *getAll.Service
 }
 
-func NewServer(c *getAll.Client) *server {
+func NewEvtHandler(c *getAll.Service) *server {
 	return &server{
 		c: c,
 	}
-}
-
-func Must(s *server) (*server, error) {
-	if s == nil {
-		panic("server must be implemented")
-	}
-	return s, nil
 }
 
 func (s *server) HandleEvent(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {

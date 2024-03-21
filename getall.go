@@ -1,9 +1,17 @@
 package getAll
 
+import "context"
+
 type Request struct {
 	Name string `json:"name"`
 }
 
 type Response struct {
-	Text string `json:"text"`
+	Name        string `json:"name"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+type Repository interface {
+	GetAll(ctx context.Context, req *Request) ([]Response, error)
 }

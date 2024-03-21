@@ -2,16 +2,15 @@ package main
 
 import (
 	"github.com/aws/aws-lambda-go/lambda"
-	getAll "github.com/jason90929/lambda-ddb-query"
-	handler "github.com/jason90929/lambda-ddb-query/apigateway"
+	getAll "github.com/jason90929/jt-notes-lambda-get-all"
+	handler "github.com/jason90929/jt-notes-lambda-get-all/apigateway"
+	"github.com/jason90929/jt-notes-lambda-get-all/dynamodb"
 )
 
 func main() {
-	client := getAll.NewClient()
-	server, err := handler.Must(handler.NewServer(client))
-	if err != nil {
-		panic("init server failed")
-	}
+	repo := dynamodb.NewRepository()
+	client := getAll.NewService(repo)
+	h := handler.NewEvtHandler(client)
 
-	lambda.Start(server.HandleEvent)
+	lambda.Start(h.HandleEvent)
 }

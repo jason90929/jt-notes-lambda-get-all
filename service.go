@@ -1,18 +1,19 @@
 package getAll
 
-import "context"
+import (
+	"context"
+)
 
-type Client struct {
+type Service struct {
+	r Repository
 }
 
-func NewClient() *Client {
-	return &Client{}
+func NewService(r Repository) *Service {
+	return &Service{
+		r: r,
+	}
 }
 
-func (s *Client) GetAll(ctx context.Context, req *Request) (*Response, error) {
-	// TODO: retrieve from DDB
-
-	return &Response{
-		Text: req.Name,
-	}, nil
+func (s *Service) GetAll(ctx context.Context, req *Request) ([]Response, error) {
+	return s.r.GetAll(ctx, req)
 }
